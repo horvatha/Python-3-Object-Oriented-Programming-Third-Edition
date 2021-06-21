@@ -24,8 +24,8 @@ class LogSocket:
 
     def send(self, data):
         print(
-            "Sending {0} to {1}".format(
-                data, self.socket.getpeername()[0]
+            "Sending {} to {} ({} bytes)".format(
+                data, self.socket.getpeername()[0], len(data)
             )
         )
         self.socket.send(data)
@@ -47,7 +47,8 @@ try:
     while True:
         client, addr = server.accept()
         # respond(client)  # No decorator
-        respond(LogSocket(client))  # One decorator
+        # respond(LogSocket(client))  # One decorator
+        respond(GzipSocket(LogSocket(client)))  # One decorator
 finally:
     server.close()
 
